@@ -23,6 +23,7 @@ ENV/
 # -----------------------------
 .vscode/
 .idea/
+.github/
 *.swp
 *.swo
 .DS_Store
