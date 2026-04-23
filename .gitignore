@@ -1,0 +1,123 @@
+#file:project-specifications.md
+# Project-specific .gitignore for music-generation-unsupervised
+
+# -----------------------------
+# Python cache and bytecode
+# -----------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+
+# -----------------------------
+# Virtual environments
+# -----------------------------
+venv/
+.venv/
+env/
+ENV/
+
+# -----------------------------
+# Tooling and editor files
+# -----------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# -----------------------------
+# Jupyter artifacts
+# -----------------------------
+.ipynb_checkpoints/
+
+# -----------------------------
+# Logs and local runtime files
+# -----------------------------
+*.log
+*.out
+*.err
+
+# -----------------------------
+# Environment and secret files
+# -----------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# -----------------------------
+# Build and packaging artifacts
+# -----------------------------
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# -----------------------------
+# Test and coverage artifacts
+# -----------------------------
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# -----------------------------
+# Dataset and preprocessing outputs
+# Keep folder structure in repo, ignore heavy/generated contents.
+# -----------------------------
+data/raw_midi/**
+!data/raw_midi/.gitkeep
+
+data/processed/**
+!data/processed/.gitkeep
+
+# train_test_split can contain generated manifests; keep placeholder only.
+data/train_test_split/**
+!data/train_test_split/.gitkeep
+
+# -----------------------------
+# Model outputs and generated assets
+# Keep folder structure in repo, ignore generated files.
+# -----------------------------
+outputs/checkpoints/**
+!outputs/checkpoints/.gitkeep
+
+outputs/generated_midis/**
+!outputs/generated_midis/.gitkeep
+
+outputs/plots/**
+!outputs/plots/.gitkeep
+
+outputs/survey_results/**
+!outputs/survey_results/.gitkeep
+
+# -----------------------------
+# Report build artifacts
+# -----------------------------
+report/**/*.aux
+report/**/*.bbl
+report/**/*.bcf
+report/**/*.blg
+report/**/*.fdb_latexmk
+report/**/*.fls
+report/**/*.log
+report/**/*.out
+report/**/*.pdf
+report/**/*.run.xml
+report/**/*.synctex.gz
+report/**/*.toc
+
+# -----------------------------
+# Optional large files
+# -----------------------------
+*.pt
+*.pth
+*.ckpt
+*.mid
+*.midi
