@@ -89,15 +89,6 @@ data/train_test_split/**
 outputs/checkpoints/**
 !outputs/checkpoints/.gitkeep
 
-outputs/generated_midis/**
-!outputs/generated_midis/.gitkeep
-
-outputs/plots/**
-!outputs/plots/.gitkeep
-
-outputs/survey_results/**
-!outputs/survey_results/.gitkeep
-
 # -----------------------------
 # Report build artifacts
 # -----------------------------
@@ -113,12 +104,3 @@ report/**/*.pdf
 report/**/*.run.xml
 report/**/*.synctex.gz
 report/**/*.toc
-
-# -----------------------------
-# Optional large files
-# -----------------------------
-*.pt
-*.pth
-*.ckpt
-*.mid
-*.midi
