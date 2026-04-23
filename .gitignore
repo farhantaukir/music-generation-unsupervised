@@ -1,5 +1,5 @@
-#file:project-specifications.md
-# Project-specific .gitignore for music-generation-unsupervised
+file:project-specifications.md
+
 
 # -----------------------------
 # Python cache and bytecode
