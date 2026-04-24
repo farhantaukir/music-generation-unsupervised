@@ -129,6 +129,7 @@ def _score_sequence_metrics(token_sequence: Sequence[int]) -> Dict[str, float]:
             "pitch_diversity": 0.0,
             "rhythm_diversity": 0.0,
             "repetition_ratio": 1.0,
+            "length_quality": 0.0,
             "quality": 0.0,
         }
 
@@ -137,14 +138,22 @@ def _score_sequence_metrics(token_sequence: Sequence[int]) -> Dict[str, float]:
 
     rhythm_score = float(rhythm_diversity(durations))
     repetition = float(repetition_ratio(note_tokens, pattern_length=4))
+    target_note_count = 64.0
+    length_quality = float(min(len(note_tokens) / target_note_count, 1.0))
 
     repetition_quality = 1.0 - min(max(repetition, 0.0), 1.0)
-    quality = 0.4 * pitch_diversity + 0.3 * rhythm_score + 0.3 * repetition_quality
+    quality = (
+        0.35 * pitch_diversity
+        + 0.25 * rhythm_score
+        + 0.25 * repetition_quality
+        + 0.15 * length_quality
+    )
 
     return {
         "pitch_diversity": pitch_diversity,
         "rhythm_diversity": rhythm_score,
         "repetition_ratio": repetition,
+        "length_quality": length_quality,
         "quality": float(min(max(quality, 0.0), 1.0)),
     }
 
