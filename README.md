@@ -244,7 +244,6 @@ torch.manual_seed(SEED)
 ### Datasets
 - **MAESTRO**: https://magenta.tensorflow.org/datasets/maestro
 - **Lakh MIDI**: https://colinraffel.com/projects/lakh/
-- **Groove MIDI**: https://magenta.tensorflow.org/datasets/groove
 
 ---
 
