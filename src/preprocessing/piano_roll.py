@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import List, Sequence
+import warnings
 
 import numpy as np
 from tqdm import tqdm
@@ -111,6 +112,7 @@ def load_windowed_piano_rolls(
 ) -> np.ndarray:
     """Load MIDI files and return stacked piano-roll windows for training."""
     all_windows: List[np.ndarray] = []
+    skipped_files: List[tuple[Path, Exception]] = []
 
     for midi_path in tqdm(midi_files, desc="Converting MIDI to windows"):
         try:
@@ -124,8 +126,20 @@ def load_windowed_piano_rolls(
                 step_size=step_size,
             )
             all_windows.extend(windows)
-        except Exception:
+        except Exception as error:
+            skipped_files.append((Path(midi_path), error))
             continue
+
+    if skipped_files:
+        first_path, first_error = skipped_files[0]
+        warnings.warn(
+            "Skipped "
+            f"{len(skipped_files)} MIDI file(s) during preprocessing. "
+            f"First skipped file: '{first_path}'. "
+            f"Reason: {type(first_error).__name__}: {first_error}",
+            RuntimeWarning,
+            stacklevel=2,
+        )
 
     if not all_windows:
         raise ValueError("No valid piano-roll windows were created from the provided MIDI files.")
