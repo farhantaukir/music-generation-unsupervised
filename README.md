@@ -254,7 +254,7 @@ This project was developed as a Neural Networks course assignment.
 
 **Author(s):** Farhan Taukir Rafin and Jamshedul Alam Khan Hridoy  
 **Course:** CSE425: Neural Networks  
-**Institution:** [BRAC University]  
+**Institution:** BRAC University  
 **Date:** April 2026  
 
 ---
