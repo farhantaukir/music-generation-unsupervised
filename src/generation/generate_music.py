@@ -328,15 +328,24 @@ def load_trained_transformer(
 
 def transformer_tokens_to_piano_roll(
     token_sequence: Tensor,
-    sequence_length: int = SEQUENCE_LENGTH,
+    sequence_length: int | None = None,
 ) -> np.ndarray:
     """Convert generated Transformer note tokens into a binary piano-roll matrix."""
     from src.config import MIDI_MAX_PITCH, MIDI_MIN_PITCH
 
     pitch_dim = MIDI_MAX_PITCH - MIDI_MIN_PITCH + 1
-    piano_roll = np.zeros((sequence_length, pitch_dim), dtype=np.float32)
-
     token_values = token_sequence.detach().cpu().tolist()
+    note_token_count = 0
+    for token in token_values:
+        if token == TOKEN_EOS_ID:
+            break
+        if token >= TOKEN_NOTE_OFFSET:
+            note_token_count += 1
+
+    effective_length = sequence_length if sequence_length is not None else note_token_count
+    effective_length = max(int(effective_length), 1)
+    piano_roll = np.zeros((effective_length, pitch_dim), dtype=np.float32)
+
     current_time = 0
     for token in token_values:
         if token in (TOKEN_PAD_ID, TOKEN_BOS_ID):
@@ -347,7 +356,7 @@ def transformer_tokens_to_piano_roll(
             try:
                 pitch = token_to_pitch(int(token))
                 pitch_index = pitch - MIDI_MIN_PITCH
-                if 0 <= current_time < sequence_length and 0 <= pitch_index < pitch_dim:
+                if 0 <= current_time < effective_length and 0 <= pitch_index < pitch_dim:
                     piano_roll[current_time, pitch_index] = 1.0
                     current_time += 1
             except ValueError:
@@ -384,7 +393,7 @@ def generate_task3_samples(
 
         piano_roll = transformer_tokens_to_piano_roll(
             token_sequence=generated_tokens.squeeze(0),
-            sequence_length=SEQUENCE_LENGTH,
+            sequence_length=max(SEQUENCE_LENGTH, int(max_new_tokens)),
         )
         file_path = base_dir / f"task3_sample_{sample_index + 1}.mid"
         _save_piano_roll_as_midi(
@@ -425,7 +434,7 @@ def generate_task4_samples(
 
         piano_roll = transformer_tokens_to_piano_roll(
             token_sequence=generated_tokens.squeeze(0),
-            sequence_length=SEQUENCE_LENGTH,
+            sequence_length=max(SEQUENCE_LENGTH, int(max_new_tokens)),
         )
         file_path = base_dir / f"task4_sample_{sample_index + 1}.mid"
         _save_piano_roll_as_midi(
